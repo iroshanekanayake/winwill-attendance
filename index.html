@@ -32,6 +32,14 @@ button.secondary{background:#64748b}.danger{background:#dc2626!important}
 .money{font-size:18px;font-weight:bold}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
 .summary .box{background:#fff;border-radius:10px;padding:14px;border-left:4px solid #2563eb}
 .small{font-size:12px;color:#64748b}.center{text-align:center}
+
+/* Calculation UI Customization */
+.calc-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.calc-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f8fafc;border-radius:8px;font-size:14px;border-left:4px solid #cbd5e1}
+.calc-item.add{border-left-color:#16a34a}
+.calc-item.deduct{border-left-color:#dc2626;color:#dc2626}
+.calc-item.total{border-left-color:#2563eb;background:#eff6ff;font-weight:bold;font-size:16px;color:#1e40af}
+
 @media print{nav,.no-print,header{display:none!important}.page{display:none!important}.page.active{display:block!important}body{background:white}.card{box-shadow:none}}
 </style>
 </head>
@@ -95,6 +103,7 @@ button.secondary{background:#64748b}.danger{background:#dc2626!important}
 <div class="row">
 <div class="field"><label>Deduction (%)</label><input id="deduction" type="number" step="0.01"></div>
 <div class="field"><label>මරණාධාර Deduction (Rs.)</label><input id="funeral" type="number"></div>
+<div class="field"><label>Advance / අත්තිකාරම් (Rs.)</label><input id="advance" type="number"></div>
 </div><br>
 <button class="action" onclick="saveSettings()">Save Settings</button>
 </div>
@@ -103,7 +112,7 @@ button.secondary{background:#64748b}.danger{background:#dc2626!important}
 
 <script>
 const KEY_SETTINGS="winwill_settings_v1";
-const DEFAULT_SETTINGS={name:"Eroshan Ekanayaka",phone:"071 5500451",shiftRate:1800,otRate:337,attendanceAllowance:8000,deductionPercent:8,funeralDeduction:400};
+const DEFAULT_SETTINGS={name:"Eroshan Ekanayaka",phone:"071 5500451",shiftRate:1800,otRate:337,attendanceAllowance:8000,deductionPercent:8,funeralDeduction:400,advanceDeduction:0};
 const poya={
 2026:["2026-01-03","2026-02-01","2026-03-02","2026-04-01","2026-05-01","2026-05-30","2026-06-29","2026-07-29","2026-08-27","2026-09-26","2026-10-25","2026-11-24","2026-12-23"],
 2027:["2027-01-22","2027-02-20","2027-03-22","2027-04-20","2027-05-19","2027-06-18","2027-07-18","2027-08-16","2027-09-15","2027-10-15","2027-11-13","2027-12-13"],
@@ -114,7 +123,7 @@ const months=["January","February","March","April","May","June","July","August",
 month.innerHTML=months.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
 year.innerHTML=[2026,2027,2028].map(y=>`<option>${y}</option>`).join("");
 month.value=new Date().getMonth(); year.value=new Date().getFullYear();
-function settingsToUI(){topName.value=settings.name;topPhone.value=settings.phone;setName.value=settings.name;setPhone.value=settings.phone;shiftRate.value=settings.shiftRate;otRate.value=settings.otRate;allowance.value=settings.attendanceAllowance;deduction.value=settings.deductionPercent;funeral.value=settings.funeralDeduction}
+function settingsToUI(){topName.value=settings.name;topPhone.value=settings.phone;setName.value=settings.name;setPhone.value=settings.phone;shiftRate.value=settings.shiftRate;otRate.value=settings.otRate;allowance.value=settings.attendanceAllowance;deduction.value=settings.deductionPercent;funeral.value=settings.funeralDeduction;advance.value=settings.advanceDeduction||0}
 function daysInMonth(y,m){return new Date(y,m+1,0).getDate()}
 function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`}
 function calc(inT,outT){if(!inT||!outT)return {h:"",ot:""};let a=inT.split(":").map(Number),b=outT.split(":").map(Number);let x=a[0]+a[1]/60,y=b[0]+b[1]/60;if(y<x)y+=24;let h=Math.round((y-x)*100)/100;return {h,ot:Math.round(Math.max(0,h-8)*100)/100}}
@@ -123,9 +132,27 @@ function saveMonth(){let data={};document.querySelectorAll("#attendanceBody tr")
 function render(){let y=Number(year.value),m=Number(month.value),data=getData(),html="";for(let d=1;d<=daysInMonth(y,m);d++){let dt=new Date(y,m,d),key=dateKey(y,m,d),day=dt.toLocaleDateString("en-US",{weekday:"short"}),cls=poya[y]?.includes(key)?"poya":dt.getDay()===6?"saturday":dt.getDay()===0?"sunday":"";let r=data[key]||{};let c=calc(r.in,r.out);html+=`<tr class="${cls}" data-date="${key}"><td>${d}</td><td>${day}</td><td><input class="in" type="time" value="${r.in||""}" oninput="updateRow(this)"></td><td><input class="out" type="time" value="${r.out||""}" oninput="updateRow(this)"></td><td class="hours">${c.h===""?"":c.h.toFixed(2)}</td><td class="ot">${c.ot===""?"":c.ot.toFixed(2)}</td></tr>`}attendanceBody.innerHTML=html;updatePay()}
 function resetMonth(){if(confirm("ඔබට මෙම මාසයේ ඇතුළත් කළ සියලුම Attendance දත්ත මකා දැමීමට අවශ්‍යද?")){localStorage.removeItem(`attendance_${year.value}_${Number(month.value)+1}`);render();alert("මෙම මාසයේ දත්ත සාර්ථකව මකා දැමුවා.");}}
 function updateRow(el){let tr=el.closest("tr"),c=calc(tr.querySelector(".in").value,tr.querySelector(".out").value);tr.querySelector(".hours").textContent=c.h===""?"":c.h.toFixed(2);tr.querySelector(".ot").textContent=c.ot===""?"":c.ot.toFixed(2);updatePay()}
-function updatePay(){let records=[...document.querySelectorAll("#attendanceBody tr")].map(tr=>({in:tr.querySelector(".in").value,out:tr.querySelector(".out").value})).filter(x=>x.in&&x.out);let totalOT=records.reduce((s,x)=>s+calc(x.in,x.out).ot,0),workingDays=records.length,basic=workingDays*Number(settings.shiftRate),otAmount=totalOT*Number(settings.otRate),allow=Number(settings.attendanceAllowance),gross=basic+otAmount+allow,ded=basic*Number(settings.deductionPercent)/100,fun=Number(settings.funeralDeduction),take=gross-ded-fun;paySummary.innerHTML=[["Working Days",workingDays],["Basic",money(basic)],["OT",money(otAmount)],["Allowance",money(allow)],["Gross",money(gross)],["Total Deductions",money(ded+fun)],["Take Home",money(take)]].map(x=>`<div class="box"><div class="small">${x[0]}</div><div class="money">${x[1]}</div></div>`).join("");payDetails.innerHTML=`<p>Basic = ${workingDays} × Rs. ${Number(settings.shiftRate).toFixed(2)} = <b>${money(basic)}</b></p><p>OT = ${totalOT.toFixed(2)} hours × Rs. ${Number(settings.otRate).toFixed(2)} = <b>${money(otAmount)}</b></p><p>Gross = Basic + OT + Allowance = <b>${money(gross)}</b></p><p>Deduction = ${Number(settings.deductionPercent)}% of Basic = <b>${money(ded)}</b></p><p>මරණාධාර = <b>${money(fun)}</b></p><p><b>Estimated Take Home = ${money(take)}</b></p>`}
+function updatePay(){
+let records=[...document.querySelectorAll("#attendanceBody tr")].map(tr=>({in:tr.querySelector(".in").value,out:tr.querySelector(".out").value})).filter(x=>x.in&&x.out);
+let totalOT=records.reduce((s,x)=>s+calc(x.in,x.out).ot,0),workingDays=records.length,basic=workingDays*Number(settings.shiftRate),otAmount=totalOT*Number(settings.otRate),allow=Number(settings.attendanceAllowance),gross=basic+otAmount+allow,ded=basic*Number(settings.deductionPercent)/100,fun=Number(settings.funeralDeduction),adv=Number(settings.advanceDeduction||0),totalDeductions=ded+fun+adv,take=gross-totalDeductions;
+
+paySummary.innerHTML=[["Working Days",workingDays],["Basic",money(basic)],["OT",money(otAmount)],["Allowance",money(allow)],["Gross",money(gross)],["Total Deductions",money(totalDeductions)],["Take Home",money(take)]].map(x=>`<div class="box"><div class="small">${x[0]}</div><div class="money">${x[1]}</div></div>`).join("");
+
+payDetails.innerHTML=`
+<div class="calc-list">
+  <div class="calc-item add"><span>Basic (${workingDays} days × Rs. ${Number(settings.shiftRate).toFixed(2)})</span> <b>${money(basic)}</b></div>
+  <div class="calc-item add"><span>OT (${totalOT.toFixed(2)} hrs × Rs. ${Number(settings.otRate).toFixed(2)})</span> <b>${money(otAmount)}</b></div>
+  <div class="calc-item add"><span>Attendance Allowance</span> <b>${money(allow)}</b></div>
+  <div class="calc-item" style="font-weight:bold; background:#f1f5f9;"><span>Gross Salary</span> <b>${money(gross)}</b></div>
+  <div class="calc-item deduct"><span>Deduction (${Number(settings.deductionPercent)}% of Basic)</span> <b>- ${money(ded)}</b></div>
+  <div class="calc-item deduct"><span>මරණාධාර Deduction</span> <b>- ${money(fun)}</b></div>
+  <div class="calc-item deduct"><span>Advance / අත්තිකාරම්</span> <b>- ${money(adv)}</b></div>
+  <div class="calc-item deduct" style="font-weight:bold; background:#fef2f2;"><span>Total Deductions</span> <b>- ${money(totalDeductions)}</b></div>
+  <div class="calc-item total"><span>Estimated Take Home</span> <b>${money(take)}</b></div>
+</div>`;
+}
 function money(n){return "Rs. "+Number(n).toLocaleString("en-LK",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function saveSettings(){settings={name:setName.value.trim(),phone:setPhone.value.trim(),shiftRate:Number(shiftRate.value)||0,otRate:Number(otRate.value)||0,attendanceAllowance:Number(allowance.value)||0,deductionPercent:Number(deduction.value)||0,funeralDeduction:Number(funeral.value)||0};localStorage.setItem(KEY_SETTINGS,JSON.stringify(settings));settingsToUI();updatePay();alert("Settings saved.")}
+function saveSettings(){settings={name:setName.value.trim(),phone:setPhone.value.trim(),shiftRate:Number(shiftRate.value)||0,otRate:Number(otRate.value)||0,attendanceAllowance:Number(allowance.value)||0,deductionPercent:Number(deduction.value)||0,funeralDeduction:Number(funeral.value)||0,advanceDeduction:Number(advance.value)||0};localStorage.setItem(KEY_SETTINGS,JSON.stringify(settings));settingsToUI();updatePay();alert("Settings saved.")}
 function showPage(p){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(p).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));document.getElementById("nav"+p[0].toUpperCase()+p.slice(1)).classList.add("active");if(p==="pay")updatePay()}
 function printPage(){window.print()}
 month.onchange=render;year.onchange=render;settingsToUI();render();
