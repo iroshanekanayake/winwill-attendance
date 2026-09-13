@@ -1,577 +1,133 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Winwill Co. (pvt) Ltd - Attendance & Salary Calculator</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a4ba0">
-    <style>
-        :root {
-            --primary: #1a4ba0;
-            --primary-dark: #0f3272;
-            --secondary: #28a745;
-            --danger: #dc3545;
-            --bg: #f4f6f9;
-            --card-bg: #ffffff;
-            --text: #333333;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding-bottom: 30px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            text-align: center;
-            padding: 20px 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            font-size: 1.4rem;
-            margin-bottom: 5px;
-        }
-
-        header p {
-            font-size: 0.85rem;
-            opacity: 0.9;
-        }
-
-        .nav-tabs {
-            display: flex;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            border: none;
-            background: none;
-            font-weight: bold;
-            color: #666;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            font-size: 0.95rem;
-        }
-
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 12px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-        }
-
-        .row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-bottom: 10px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary { background-color: var(--primary); }
-        .btn-success { background-color: var(--secondary); }
-        .btn-danger { background-color: var(--danger); }
-
-        .legend {
-            display: flex;
-            justify-content: space-around;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .color-box {
-            width: 14px;
-            height: 14px;
-            border-radius: 3px;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            text-align: center;
-        }
-
-        th {
-            background-color: var(--primary-dark);
-            color: white;
-            padding: 10px 5px;
-            font-weight: 600;
-        }
-
-        td {
-            padding: 8px 4px;
-            border-bottom: 1px solid #eee;
-        }
-
-        tr.saturday { background-color: #e8f4f8; }
-        tr.sunday { background-color: #fde8e8; }
-        tr.poya { background-color: #fef8e7; }
-
-        .summary-card {
-            background: #eef3fb;
-            border-left: 4px solid var(--primary);
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
-
-        .summary-row.total {
-            font-weight: bold;
-            border-top: 1px solid #ccc;
-            padding-top: 6px;
-            color: var(--primary-dark);
-            font-size: 1rem;
-        }
-
-        /* Print styles for removing arrows and clean print */
-        @media print {
-            body { background: white; padding: 0; }
-            .nav-tabs, .card, .btn, header p, .legend, .no-print { display: none !important; }
-            .container { max-width: 100%; padding: 0; }
-            .table-responsive { box-shadow: none; }
-            table { border: 1px solid #000; }
-            th, td { border: 1px solid #ccc; padding: 6px; }
-            th { background-color: #333 !important; color: white !important; }
-            
-            /* Clean display for selects when printing */
-            select {
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                border: none !important;
-                background: transparent !important;
-                text-align: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Attendance">
+<link rel="manifest" href="manifest.json">
+<title>Winwill Attendance</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#172033}
+header{background:#174ea6;color:white;padding:16px;text-align:center}
+header h1{margin:0;font-size:20px}header p{margin:5px 0 0;font-size:13px}
+nav{display:flex;background:white;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px #0001}
+nav button{flex:1;border:0;background:white;padding:12px 4px;font-weight:bold;color:#42526b}
+nav button.active{color:#174ea6;border-bottom:3px solid #174ea6}
+main{max-width:1100px;margin:auto;padding:12px}
+.page{display:none}.page.active{display:block}
+.card{background:white;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 10px #00000010}
+.row{display:flex;gap:10px;flex-wrap:wrap}.field{flex:1;min-width:130px}
+label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px;color:#526078}
+input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:white;font-size:15px}
+button.action{border:0;border-radius:8px;padding:10px 14px;background:#2563eb;color:white;font-weight:bold}
+button.secondary{background:#64748b}.danger{background:#dc2626!important}
+.table-wrap{overflow:auto}.att{width:100%;border-collapse:collapse;min-width:700px}
+.att th,.att td{border:1px solid #d8dee9;padding:7px;text-align:center;font-size:13px}
+.att th{background:#e8eef8}.att tr.saturday{background:#dceeff}.att tr.sunday{background:#ffe1e1}.att tr.poya{background:#fff2a8}
+.att input{padding:6px;min-width:85px}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8eef8;font-size:12px}
+.money{font-size:18px;font-weight:bold}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.summary .box{background:#fff;border-radius:10px;padding:14px;border-left:4px solid #2563eb}
+.small{font-size:12px;color:#64748b}.center{text-align:center}
+@media print{nav,.no-print,header{display:none!important}.page{display:none!important}.page.active{display:block!important}body{background:white}.card{box-shadow:none}}
+</style>
 </head>
 <body>
+<header>
+<h1>Winwill Co. (pvt) Ltd</h1><p>Biyagama — Attendance & Salary Calculator</p>
+</header>
+<nav>
+<button id="navAttendance" class="active" onclick="showPage('attendance')">Attendance</button>
+<button id="navPay" onclick="showPage('pay')">Pay Sheet</button>
+<button id="navSettings" onclick="showPage('settings')">Settings</button>
+</nav>
+<main>
 
-    <header>
-        <h1>Winwill Co. (pvt) Ltd</h1>
-        <p>Biyagama – Attendance & Salary Calculator</p>
-    </header>
+<section id="attendance" class="page active">
+<div class="card no-print">
+<div class="row">
+<div class="field"><label>Employee Name</label><input id="topName" readonly></div>
+<div class="field"><label>Phone</label><input id="topPhone" readonly></div>
+<div class="field"><label>Month</label><select id="month"></select></div>
+<div class="field"><label>Year</label><select id="year"></select></div>
+</div>
+</div>
+<div class="card">
+<div class="row no-print" style="margin-bottom:10px">
+<button class="action" onclick="saveMonth()">Save Attendance</button>
+<button class="action secondary" onclick="printPage()">Print / PDF</button>
+</div>
+<div class="table-wrap">
+<table class="att"><thead><tr><th>Date</th><th>Day</th><th>In</th><th>Out</th><th>Total Hours</th><th>OT Hours</th></tr></thead>
+<tbody id="attendanceBody"></tbody></table>
+</div></div>
+</section>
 
-    <div class="nav-tabs no-print">
-        <button class="tab-btn active" onclick="switchTab('attendance')">📋 Attendance</button>
-        <button class="tab-btn" onclick="switchTab('paysheet')">💰 Pay Sheet</button>
-    </div>
+<section id="pay" class="page">
+<div class="card">
+<h2>Estimated Pay Sheet</h2>
+<p class="small">This is an estimate based on the attendance entered above.</p>
+<div class="summary" id="paySummary"></div>
+</div>
+<div class="card">
+<h3>Calculation</h3>
+<div id="payDetails"></div>
+</div>
+<div class="card no-print"><button class="action" onclick="printPage()">Print / PDF</button></div>
+</section>
 
-    <div class="container">
-        <!-- Attendance Tab -->
-        <div id="attendance-tab" class="tab-content active">
-            
-            <!-- User Info & Month Selection Card -->
-            <div class="card no-print">
-                <div class="form-group">
-                    <label>සේවක නම (Employee Name)</label>
-                    <input type="text" id="emp-name" class="form-control" value="Eroshan Ekanayaka" onchange="saveMonthData()">
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>මාසය (Month)</label>
-                            <select id="select-month" class="form-control" onchange="loadMonthData()">
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9" selected>September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>අවුරුද්ද (Year)</label>
-                            <select id="select-year" class="form-control" onchange="loadMonthData()">
-                                <option value="2025">2025</option>
-                                <option value="2026" selected>2026</option>
-                                <option value="2027">2027</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section id="settings" class="page">
+<div class="card">
+<h2>Settings</h2>
+<div class="row">
+<div class="field"><label>Employee Name</label><input id="setName"></div>
+<div class="field"><label>Phone</label><input id="setPhone"></div>
+</div><br>
+<div class="row">
+<div class="field"><label>Shift / Basic Rate per Working Day (Rs.)</label><input id="shiftRate" type="number"></div>
+<div class="field"><label>OT Rate per Hour (Rs.)</label><input id="otRate" type="number"></div>
+<div class="field"><label>Attendance Allowance (Rs.)</label><input id="allowance" type="number"></div>
+</div><br>
+<div class="row">
+<div class="field"><label>Deduction (%)</label><input id="deduction" type="number" step="0.01"></div>
+<div class="field"><label>මරණාධාර Deduction (Rs.)</label><input id="funeral" type="number"></div>
+</div><br>
+<button class="action" onclick="saveSettings()">Save Settings</button>
+</div>
+</section>
+</main>
 
-            <!-- Modern Form Input Card -->
-            <div class="card no-print">
-                <h3 style="font-size: 1rem; margin-bottom: 10px; color: var(--primary);">➕ Attendance ඇතුළත් කරන්න</h3>
-                <div class="form-group">
-                    <label>දිනය (1 - 31)</label>
-                    <input type="number" id="input-day" class="form-control" min="1" max="31" placeholder="උදා: 1">
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>පැමිණි වේලාව (In)</label>
-                            <select id="input-in" class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>පිටවූ වේලාව (Out)</label>
-                            <select id="input-out" class="form-control"></select>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="addAttendanceFromForm()">➕ Attendance Save</button>
-            </div>
-
-            <div class="no-print">
-                <button class="btn btn-success" onclick="window.print()">🩻 Print / PDF</button>
-                <button class="btn btn-danger" onclick="resetCurrentMonth()">🗑️ Reset Month</button>
-            </div>
-
-            <div class="legend no-print">
-                <div class="legend-item"><div class="color-box" style="background:#e8f4f8;"></div> සෙනසුරාදා</div>
-                <div class="legend-item"><div class="color-box" style="background:#fde8e8;"></div> ඉරිදා</div>
-            </div>
-
-            <!-- Table Section -->
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>දිනය</th>
-                            <th>In</th>
-                            <th>Out</th>
-                            <th>Total Hrs</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendance-tbody"></tbody>
-                    <tfoot>
-                        <tr style="background-color: #fff3cd; font-weight: bold;">
-                            <td colspan="3">එකතුව (Total)</td>
-                            <td id="table-total-hrs">0</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        <!-- Pay Sheet Tab -->
-        <div id="paysheet-tab" class="tab-content">
-            <div class="card">
-                <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
-                    <h2>💰 PAY SHEET</h2>
-                    <p id="paysheet-month-title">September 2026</p>
-                </div>
-
-                <div class="summary-card">
-                    <h4 style="margin-bottom: 8px; color: #555;">Attendance Summary</h4>
-                    <div class="summary-row"><span>වැඩ කළ දින ගණන:</span><span id="ps-days">0</span></div>
-                    <div class="summary-row"><span>Total Work Hours:</span><span id="ps-work-hrs">0</span></div>
-                    <div class="summary-row"><span>Total OT Hours:</span><span id="ps-ot-hrs">0</span></div>
-                </div>
-
-                <div class="card" style="margin-top: 15px; border: 1px solid #e0e0e0;">
-                    <h4 style="margin-bottom: 8px; color: var(--secondary);">Earnings</h4>
-                    <div class="summary-row"><span>Basic (දින × Rs.1800):</span><span id="ps-basic">Rs. 0.00</span></div>
-                    <div class="summary-row"><span>OT (පැය × Rs.337):</span><span id="ps-ot">Rs. 0.00</span></div>
-                    <div class="summary-row"><span>Attendance Allowance:</span><span id="ps-allowance">Rs. 8,000.00</span></div>
-                    <div class="summary-row total"><span>Gross Earnings:</span><span id="ps-gross">Rs. 0.00</span></div>
-                </div>
-
-                <div class="card" style="margin-top: 10px; border: 1px solid #e0e0e0;">
-                    <h4 style="margin-bottom: 8px; color: var(--danger);">Deductions</h4>
-                    <div class="summary-row"><span>8% Deduction:</span><span id="ps-ded-8">Rs. 0.00</span></div>
-                    <div class="summary-row"><span>මරණාධාර:</span><span>Rs. 400.00</span></div>
-                    <div class="summary-row total" style="color: var(--danger);"><span>Total Deductions:</span><span id="ps-total-ded">Rs. 0.00</span></div>
-                </div>
-
-                <div class="summary-card" style="background: #e8f5e9; border-left-color: var(--secondary);">
-                    <div class="summary-row total" style="color: var(--secondary); font-size: 1.1rem;">
-                        <span>💰 අතට ලැබෙන දළ මුදල:</span>
-                        <span id="ps-net">Rs. 0.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const timeOptions = ["", "06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "12:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"];
-        let monthData = {};
-
-        window.onload = function() {
-            populateTimeDropdowns();
-            loadMonthData();
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js');
-            }
-        };
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            if(tabName === 'attendance') {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('attendance-tab').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('paysheet-tab').classList.add('active');
-                calculatePaySheet();
-            }
-        }
-
-        function populateTimeDropdowns() {
-            const inSelect = document.getElementById('input-in');
-            const outSelect = document.getElementById('input-out');
-            inSelect.innerHTML = '<option value="">තෝරන්න</option>';
-            outSelect.innerHTML = '<option value="">තෝරන්න</option>';
-
-            timeOptions.forEach(opt => {
-                if(opt) {
-                    inSelect.innerHTML += `<option value="${opt}">${opt}</option>`;
-                    outSelect.innerHTML += `<option value="${opt}">${opt}</option>`;
-                }
-            });
-        }
-
-        function getStorageKey() {
-            const m = document.getElementById('select-month').value;
-            const y = document.getElementById('select-year').value;
-            return `winwill_${y}_${m}`;
-        }
-
-        function loadMonthData() {
-            const key = getStorageKey();
-            const saved = localStorage.getItem(key);
-            monthData = saved ? JSON.parse(saved) : {};
-            renderTable();
-        }
-
-        function saveMonthData() {
-            const key = getStorageKey();
-            localStorage.setItem(key, JSON.stringify(monthData));
-            renderTable();
-        }
-
-        function getDaysInMonth(year, month) {
-            return new Date(year, month, 0).getDate();
-        }
-
-        function renderTable() {
-            const m = parseInt(document.getElementById('select-month').value);
-            const y = parseInt(document.getElementById('select-year').value);
-            const daysCount = getDaysInMonth(y, m);
-            const tbody = document.getElementById('attendance-tbody');
-            tbody.innerHTML = '';
-
-            let totalHrs = 0;
-
-            for(let d = 1; d <= daysCount; d++) {
-                const dateObj = new Date(y, m - 1, d);
-                const dayOfWeek = dateObj.getDay(); // 0 = Sun, 6 = Sat
-                
-                let trClass = '';
-                if(dayOfWeek === 6) trClass = 'saturday';
-                if(dayOfWeek === 0) trClass = 'sunday';
-
-                const dayData = monthData[d] || { in: '', out: '', hrs: 0 };
-                totalHrs += parseFloat(dayData.hrs || 0);
-
-                let inOptions = timeOptions.map(t => `<option value="${t}" ${dayData.in === t ? 'selected':''}>${t}</option>`).join('');
-                let outOptions = timeOptions.map(t => `<option value="${t}" ${dayData.out === t ? 'selected':''}>${t}</option>`).join('');
-
-                tbody.innerHTML += `
-                    <tr class="${trClass}">
-                        <td>${d}</td>
-                        <td><select class="form-control" style="padding:4px; font-size:0.8rem;" onchange="updateRow(${d}, 'in', this.value)">${inOptions}</select></td>
-                        <td><select class="form-control" style="padding:4px; font-size:0.8rem;" onchange="updateRow(${d}, 'out', this.value)">${outOptions}</select></td>
-                        <td id="hrs-${d}">${dayData.hrs || '-'}</td>
-                    </tr>
-                `;
-            }
-
-            document.getElementById('table-total-hrs').innerText = totalHrs;
-        }
-
-        function calculateHours(inTime, outTime) {
-            if(!inTime || !outTime) return 0;
-            // Simplified calculation logic for hours
-            return 10; // Default placeholder for hours worked between standard shifts
-        }
-
-        function updateRow(day, field, val) {
-            if(!monthData[day]) monthData[day] = { in: '', out: '', hrs: 0 };
-            monthData[day][field] = val;
-            
-            if(monthData[day].in && monthData[day].out) {
-                monthData[day].hrs = calculateHours(monthData[day].in, monthData[day].out);
-            } else {
-                monthData[day].hrs = 0;
-            }
-            saveMonthData();
-        }
-
-        function addAttendanceFromForm() {
-            const day = parseInt(document.getElementById('input-day').value);
-            const inTime = document.getElementById('input-in').value;
-            const outTime = document.getElementById('input-out').value;
-
-            if(!day || day < 1 || day > 31) {
-                alert('කරුණාකර නිවැරදි දිනයක් ඇතුළත් කරන්න.');
-                return;
-            }
-
-            updateRow(day, 'in', inTime);
-            updateRow(day, 'out', outTime);
-            document.getElementById('input-day').value = '';
-            alert(`දිනය ${day} සඳහා Attendance සේව් විය!`);
-        }
-
-        function resetCurrentMonth() {
-            if(confirm('ඔබට විශ්වාසද මෙම මාසයේ සියලුම දත්ත ඉවත් කිරීමට අවශ්‍ය බව?')) {
-                monthData = {};
-                saveMonthData();
-            }
-        }
-
-        function calculatePaySheet() {
-            let daysWorked = 0;
-            let totalWorkHrs = 0;
-
-            Object.values(monthData).forEach(d => {
-                if(d.hrs > 0) {
-                    daysWorked++;
-                    totalWorkHrs += d.hrs;
-                }
-            });
-
-            const otHrs = Math.max(0, totalWorkHrs - (daysWorked * 8));
-            const basic = daysWorked * 1800;
-            const ot = otHrs * 337;
-            const allowance = daysWorked > 0 ? 8000 : 0;
-            const gross = basic + ot + allowance;
-
-            const ded8 = basic * 0.08;
-            const totalDed = ded8 + (daysWorked > 0 ? 400 : 0);
-            const net = gross - totalDed;
-
-            const monthText = document.getElementById('select-month').options[document.getElementById('select-month').selectedIndex].text;
-            const yearText = document.getElementById('select-year').value;
-
-            document.getElementById('paysheet-month-title').innerText = `${monthText} ${yearText}`;
-            document.getElementById('ps-days').innerText = daysWorked;
-            document.getElementById('ps-work-hrs').innerText = totalWorkHrs;
-            document.getElementById('ps-ot-hrs').innerText = otHrs;
-
-            document.getElementById('ps-basic').innerText = `Rs. ${basic.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('ps-ot').innerText = `Rs. ${ot.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('ps-allowance').innerText = `Rs. ${allowance.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('ps-gross').innerText = `Rs. ${gross.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-
-            document.getElementById('ps-ded-8').innerText = `Rs. ${ded8.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('ps-total-ded').innerText = `Rs. ${totalDed.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-            document.getElementById('ps-net').innerText = `Rs. ${net.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-        }
-    </script>
+<script>
+const KEY_SETTINGS="winwill_settings_v1";
+const DEFAULT_SETTINGS={name:"Eroshan Ekanayaka",phone:"071 5500451",shiftRate:1800,otRate:337,attendanceAllowance:8000,deductionPercent:8,funeralDeduction:400};
+const poya={
+2026:["2026-01-03","2026-02-01","2026-03-02","2026-04-01","2026-05-01","2026-05-30","2026-06-29","2026-07-29","2026-08-27","2026-09-26","2026-10-25","2026-11-24","2026-12-23"],
+2027:["2027-01-22","2027-02-20","2027-03-22","2027-04-20","2027-05-19","2027-06-18","2027-07-18","2027-08-16","2027-09-15","2027-10-15","2027-11-13","2027-12-13"],
+2028:["2028-01-12","2028-02-25","2028-03-25","2028-04-24","2028-05-23","2028-06-22","2028-07-21","2028-08-20","2028-09-18","2028-10-18","2028-11-16","2028-12-15"]
+};
+let settings=JSON.parse(localStorage.getItem(KEY_SETTINGS)||"null")||DEFAULT_SETTINGS;
+const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+month.innerHTML=months.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+year.innerHTML=[2026,2027,2028].map(y=>`<option>${y}</option>`).join("");
+month.value=new Date().getMonth(); year.value=new Date().getFullYear();
+function settingsToUI(){topName.value=settings.name;topPhone.value=settings.phone;setName.value=settings.name;setPhone.value=settings.phone;shiftRate.value=settings.shiftRate;otRate.value=settings.otRate;allowance.value=settings.attendanceAllowance;deduction.value=settings.deductionPercent;funeral.value=settings.funeralDeduction}
+function daysInMonth(y,m){return new Date(y,m+1,0).getDate()}
+function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`}
+function calc(inT,outT){if(!inT||!outT)return {h:"",ot:""};let a=inT.split(":").map(Number),b=outT.split(":").map(Number);let x=a[0]+a[1]/60,y=b[0]+b[1]/60;if(y<x)y+=24;let h=Math.round((y-x)*100)/100;return {h,ot:Math.round(Math.max(0,h-8)*100)/100}}
+function getData(){return JSON.parse(localStorage.getItem(`attendance_${year.value}_${Number(month.value)+1}`)||"{}")}
+function saveMonth(){let data={};document.querySelectorAll("#attendanceBody tr").forEach(tr=>{let d=tr.dataset.date;let ins=tr.querySelector(".in").value,outs=tr.querySelector(".out").value;if(ins||outs)data[d]={in:ins,out:outs}});localStorage.setItem(`attendance_${year.value}_${Number(month.value)+1}`,JSON.stringify(data));render();alert("Attendance saved.");}
+function render(){let y=Number(year.value),m=Number(month.value),data=getData(),html="";for(let d=1;d<=daysInMonth(y,m);d++){let dt=new Date(y,m,d),key=dateKey(y,m,d),day=dt.toLocaleDateString("en-US",{weekday:"short"}),cls=poya[y]?.includes(key)?"poya":dt.getDay()===6?"saturday":dt.getDay()===0?"sunday":"";let r=data[key]||{};let c=calc(r.in,r.out);html+=`<tr class="${cls}" data-date="${key}"><td>${d}</td><td>${day}</td><td><input class="in" type="time" value="${r.in||""}" oninput="updateRow(this)"></td><td><input class="out" type="time" value="${r.out||""}" oninput="updateRow(this)"></td><td class="hours">${c.h===""?"":c.h.toFixed(2)}</td><td class="ot">${c.ot===""?"":c.ot.toFixed(2)}</td></tr>`}attendanceBody.innerHTML=html;updatePay()}
+function updateRow(el){let tr=el.closest("tr"),c=calc(tr.querySelector(".in").value,tr.querySelector(".out").value);tr.querySelector(".hours").textContent=c.h===""?"":c.h.toFixed(2);tr.querySelector(".ot").textContent=c.ot===""?"":c.ot.toFixed(2);updatePay()}
+function updatePay(){let records=[...document.querySelectorAll("#attendanceBody tr")].map(tr=>({in:tr.querySelector(".in").value,out:tr.querySelector(".out").value})).filter(x=>x.in&&x.out);let totalOT=records.reduce((s,x)=>s+calc(x.in,x.out).ot,0),workingDays=records.length,basic=workingDays*Number(settings.shiftRate),otAmount=totalOT*Number(settings.otRate),allow=Number(settings.attendanceAllowance),gross=basic+otAmount+allow,ded=basic*Number(settings.deductionPercent)/100,fun=Number(settings.funeralDeduction),take=gross-ded-fun;paySummary.innerHTML=[["Working Days",workingDays],["Basic",money(basic)],["OT",money(otAmount)],["Allowance",money(allow)],["Gross",money(gross)],["Total Deductions",money(ded+fun)],["Take Home",money(take)]].map(x=>`<div class="box"><div class="small">${x[0]}</div><div class="money">${x[1]}</div></div>`).join("");payDetails.innerHTML=`<p>Basic = ${workingDays} × Rs. ${Number(settings.shiftRate).toFixed(2)} = <b>${money(basic)}</b></p><p>OT = ${totalOT.toFixed(2)} hours × Rs. ${Number(settings.otRate).toFixed(2)} = <b>${money(otAmount)}</b></p><p>Gross = Basic + OT + Allowance = <b>${money(gross)}</b></p><p>Deduction = ${Number(settings.deductionPercent)}% of Basic = <b>${money(ded)}</b></p><p>මරණාධාර = <b>${money(fun)}</b></p><p><b>Estimated Take Home = ${money(take)}</b></p>`}
+function money(n){return "Rs. "+Number(n).toLocaleString("en-LK",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function saveSettings(){settings={name:setName.value.trim(),phone:setPhone.value.trim(),shiftRate:Number(shiftRate.value)||0,otRate:Number(otRate.value)||0,attendanceAllowance:Number(allowance.value)||0,deductionPercent:Number(deduction.value)||0,funeralDeduction:Number(funeral.value)||0};localStorage.setItem(KEY_SETTINGS,JSON.stringify(settings));settingsToUI();updatePay();alert("Settings saved.")}
+function showPage(p){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(p).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));document.getElementById("nav"+p[0].toUpperCase()+p.slice(1)).classList.add("active");if(p==="pay")updatePay()}
+function printPage(){window.print()}
+month.onchange=render;year.onchange=render;settingsToUI();render();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(console.error))}
+</script>
 </body>
 </html>
