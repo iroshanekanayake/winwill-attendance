@@ -17,3 +17,5 @@ PUBLISHING
 5. Open the new test URL in a browser. Install it only as a separate test app.
 
 The test ZIP does not update or modify the currently published app.
+
+Sunday row fix: Sundays now receive the Sunday class before Poya matching, and the red background is applied directly to table cells so alternating-row and hover styling cannot cover it. Attendance storage keys, time inputs, and salary/OT calculation code were not changed.
