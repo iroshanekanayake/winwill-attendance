@@ -62,13 +62,10 @@ button.secondary{background:#475569;color:#ffffff}button.secondary:hover{backgro
 .att tr:nth-child(even){background:#161f30}
 .att tr:hover{background:#1e293b}
 
-/* Special Day Colors: apply to cells so alternating-row and hover rules cannot hide them */
-.att tbody tr.saturday > td{background:#0c2a4a;color:#93c5fd}
-.att tbody tr.sunday > td{background:#3b1219;color:#fca5a5}
-.att tbody tr.poya > td{background:#3a320d;color:#fde047}
-.att tbody tr.sunday:hover > td{background:#4a1721;color:#fecaca}
-.att tbody tr.saturday:hover > td{background:#10385f;color:#bfdbfe}
-.att tbody tr.poya:hover > td{background:#4a3f0d;color:#fef08a}
+/* Special Day Colors */
+.att tr.saturday{background:#0c2a4a;color:#93c5fd}
+.att tr.sunday{background:#3b1219;color:#fca5a5}
+.att tr.poya{background:#3a320d;color:#fde047}
 
 /* Column Width Adjustments */
 .att th:nth-child(1), .att td:nth-child(1){width:8%}  /* Date */
@@ -309,7 +306,7 @@ function render(){
   let y=Number(year.value),m=Number(month.value),data=getData(),html="";
   for(let d=1;d<=daysInMonth(y,m);d++){
     let dt=new Date(y,m,d),key=dateKey(y,m,d),day=dt.toLocaleDateString("en-US",{weekday:"short"});
-    let cls=dt.getDay()===0?"sunday":poya[y]?.includes(key)?"poya":dt.getDay()===6?"saturday":"";
+    let cls=poya[y]?.includes(key)?"poya":dt.getDay()===6?"saturday":dt.getDay()===0?"sunday":"";
     let r=data[key]||{};
     let c=calc(r.in,r.out);
     html+=`<tr class="${cls}" data-date="${key}">
