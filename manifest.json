@@ -1,6 +1,6 @@
 {
-  "name": "WIN WIL Attendance System",
-  "short_name": "WIN WIL",
+  "name": "Winwill Attendance \u2014 Theme Test",
+  "short_name": "Winwill Test",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -18,5 +18,6 @@
       "type": "image/png",
       "purpose": "any"
     }
-  ]
+  ],
+  "id": "./winwill-theme-test"
 }

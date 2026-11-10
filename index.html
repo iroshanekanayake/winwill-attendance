@@ -125,6 +125,41 @@ button.secondary{background:#475569;color:#ffffff}button.secondary:hover{backgro
   .table-summary-box {background: #f0f0f0; border: 1px solid #000;}
   .table-summary-box .value {color: #000;}
 }
+
+/* WINWILL TEST BUILD: selectable visual themes and soft 3D controls */
+:root{--bg:#121824;--panel:#1e293b;--panel2:#121824;--accent:#38bdf8;--accentText:#0f172a;--warm:#fb923c;--text:#f8fafc;--muted:#94a3b8;--border:#2d3748;--shadow:rgba(0,0,0,.42)}
+body[data-theme="purple"]{--bg:#171326;--panel:#27203d;--panel2:#1c1730;--accent:#c084fc;--accentText:#211332;--warm:#f0abfc;--text:#faf5ff;--muted:#c4b5fd;--border:#49365f;--shadow:rgba(0,0,0,.48)}
+body[data-theme="green"]{--bg:#0d1d19;--panel:#17332b;--panel2:#102720;--accent:#34d399;--accentText:#06251b;--warm:#a3e635;--text:#ecfdf5;--muted:#a7f3d0;--border:#285444;--shadow:rgba(0,0,0,.45)}
+body[data-theme="light"]{--bg:#edf3f9;--panel:#ffffff;--panel2:#f4f8fc;--accent:#2878d0;--accentText:#ffffff;--warm:#e58a32;--text:#172638;--muted:#64748b;--border:#d7e1ec;--shadow:rgba(35,58,83,.15)}
+body[data-theme="gold"]{--bg:#171513;--panel:#29231b;--panel2:#1d1914;--accent:#e6bd62;--accentText:#2b2110;--warm:#f4d58d;--text:#fff8e8;--muted:#c7b994;--border:#51432a;--shadow:rgba(0,0,0,.5)}
+body{background-color:var(--bg);color:var(--text)}
+header,nav,.card{background:var(--panel);border-color:var(--border)}
+header h1,.money,.table-summary-item .value{color:var(--accent)}
+header p,.small{color:var(--muted)}
+nav button{color:var(--muted)}
+nav button.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--panel2)}
+label,.att th,.table-summary-item .label{color:var(--warm)}
+input,select,.att,.summary .box,.calc-item,.table-summary-box{background:var(--panel2);color:var(--text);border-color:var(--border)}
+input[readonly]{background:var(--panel);color:var(--muted);border-color:var(--border)}
+.att th,.att td{color:var(--text);border-color:var(--border)}
+.att th{background:var(--panel)}
+.att tr:nth-child(even){background:color-mix(in srgb,var(--panel) 78%,var(--panel2))}
+.att input{background:var(--panel);color:var(--text);border-color:var(--border)}
+.table-summary-box{border-color:var(--accent)}
+.calc-item.total{background:var(--panel);color:var(--accent);border-left-color:var(--accent)}
+button.action,nav button{transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}
+button.action{border-radius:14px;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 88%,white),var(--accent));color:var(--accentText);box-shadow:7px 7px 14px var(--shadow),-4px -4px 10px color-mix(in srgb,var(--panel) 80%,white);border:1px solid color-mix(in srgb,var(--accent) 45%,white)}
+button.action:active,nav button:active{transform:translateY(2px) scale(.98);box-shadow:inset 4px 4px 8px var(--shadow),inset -3px -3px 7px color-mix(in srgb,var(--panel) 75%,white)}
+button.secondary{background:linear-gradient(145deg,#64748b,#475569);color:#fff;border-color:#64748b}
+button.danger{background:linear-gradient(145deg,#ef4444,#b91c1c)!important;color:#fff!important;border-color:#f87171!important}
+nav button{border-radius:10px;margin:5px 3px;font-weight:800}
+.card{box-shadow:8px 8px 18px var(--shadow),-4px -4px 12px color-mix(in srgb,var(--panel) 88%,white);border-radius:18px}
+.theme-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:8px 0 16px}
+.theme-choice{border:1px solid var(--border);border-radius:14px;padding:10px;background:var(--panel2);color:var(--text);font-weight:700;box-shadow:4px 4px 9px var(--shadow);cursor:pointer;text-align:left}
+.theme-choice[aria-pressed="true"]{outline:2px solid var(--accent);border-color:var(--accent)}
+.theme-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle;background:var(--dot)}
+@media print{body{background:white;color:black}header,.card{box-shadow:none}}
+
 </style>
 </head>
 <body>
@@ -193,6 +228,7 @@ button.secondary{background:#475569;color:#ffffff}button.secondary:hover{backgro
 <section id="settings" class="page">
 <div class="card">
 <h2 style="color:#38bdf8;margin-top:0;">Settings</h2>
+<div class="field" style="margin-bottom:16px"><label for="themeSelect">App Theme</label><select id="themeSelect" onchange="changeTheme(this.value)"><option value="original">Original Dark</option><option value="purple">Royal Purple</option><option value="green">Emerald Green</option><option value="light">Premium Light</option><option value="gold">Luxury Gold</option></select><div class="theme-picker" aria-label="Choose app theme"><button type="button" class="theme-choice" data-theme-choice="original" onclick="changeTheme('original')"><span class="theme-dot" style="--dot:#38bdf8"></span>Original Dark</button><button type="button" class="theme-choice" data-theme-choice="purple" onclick="changeTheme('purple')"><span class="theme-dot" style="--dot:#c084fc"></span>Royal Purple</button><button type="button" class="theme-choice" data-theme-choice="green" onclick="changeTheme('green')"><span class="theme-dot" style="--dot:#34d399"></span>Emerald Green</button><button type="button" class="theme-choice" data-theme-choice="light" onclick="changeTheme('light')"><span class="theme-dot" style="--dot:#2878d0"></span>Premium Light</button><button type="button" class="theme-choice" data-theme-choice="gold" onclick="changeTheme('gold')"><span class="theme-dot" style="--dot:#e6bd62"></span>Luxury Gold</button></div><p class="small">Theme is saved only on this device. It does not change other users’ appearance or attendance records.</p></div>
 <div class="row">
 <div class="field"><label>Employee Name</label><input id="setName"></div>
 <div class="field"><label>Phone</label><input id="setPhone"></div>
@@ -214,6 +250,10 @@ button.secondary{background:#475569;color:#ffffff}button.secondary:hover{backgro
 
 <script>
 const KEY_SETTINGS="winwill_settings_v1";
+const KEY_THEME_TEST="winwill_attendance_test_theme_v1";
+function applyTheme(theme){const allowed=["original","purple","green","light","gold"];const selected=allowed.includes(theme)?theme:"original";document.body.dataset.theme=selected==="original"?"original":selected;const sel=document.getElementById("themeSelect");if(sel)sel.value=selected;document.querySelectorAll("[data-theme-choice]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.themeChoice===selected)));}
+function changeTheme(theme){const allowed=["original","purple","green","light","gold"];if(!allowed.includes(theme))theme="original";localStorage.setItem(KEY_THEME_TEST,theme);applyTheme(theme);}
+
 const DEFAULT_SETTINGS={name:"Eroshan Ekanayaka",phone:"071 5500451",shiftRate:1800,otRate:337,attendanceAllowance:8000,deductionPercent:8,funeralDeduction:400,advanceDeduction:0};
 const poya={
 2026:["2026-01-03","2026-02-01","2026-03-02","2026-04-01","2026-05-01","2026-05-30","2026-06-29","2026-07-29","2026-08-27","2026-09-26","2026-10-25","2026-11-24","2026-12-23"],
@@ -365,6 +405,7 @@ month.onchange=render;
 year.onchange=render;
 
 settingsToUI();
+applyTheme(localStorage.getItem(KEY_THEME_TEST)||"original");
 render();
 
 if("serviceWorker" in navigator){
