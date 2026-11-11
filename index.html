@@ -135,7 +135,12 @@ body[data-theme="purple"]{--bg:#171326;--panel:#27203d;--panel2:#1c1730;--accent
 body[data-theme="green"]{--bg:#0d1d19;--panel:#17332b;--panel2:#102720;--accent:#34d399;--accentText:#06251b;--warm:#a3e635;--text:#ecfdf5;--muted:#a7f3d0;--border:#285444;--shadow:rgba(0,0,0,.45)}
 body[data-theme="light"]{--bg:#edf3f9;--panel:#ffffff;--panel2:#f4f8fc;--accent:#2878d0;--accentText:#ffffff;--warm:#e58a32;--text:#172638;--muted:#64748b;--border:#d7e1ec;--shadow:rgba(35,58,83,.15)}
 body[data-theme="gold"]{--bg:#171513;--panel:#29231b;--panel2:#1d1914;--accent:#e6bd62;--accentText:#2b2110;--warm:#f4d58d;--text:#fff8e8;--muted:#c7b994;--border:#51432a;--shadow:rgba(0,0,0,.5)}
-body{background-color:var(--bg);color:var(--text)}
+body{background-color:var(--bg);color:var(--text);filter:brightness(var(--app-brightness,1))}
+input[type="range"]{width:100%;padding:0;height:24px;background:transparent;border:0;accent-color:var(--accent);cursor:pointer}
+.brightness-control{margin:10px 0 16px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--panel2)}
+.brightness-labels{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.brightness-value{font-weight:800;color:var(--accent);font-size:14px}
+@media print{body{filter:none!important}}
 header,nav,.card{background:var(--panel);border-color:var(--border)}
 header h1,.money,.table-summary-item .value{color:var(--accent)}
 header p,.small{color:var(--muted)}
@@ -231,7 +236,7 @@ nav button{border-radius:10px;margin:5px 3px;font-weight:800}
 <section id="settings" class="page">
 <div class="card">
 <h2 style="color:#38bdf8;margin-top:0;">Settings</h2>
-<div class="field" style="margin-bottom:16px"><label for="themeSelect">App Theme</label><select id="themeSelect" onchange="changeTheme(this.value)"><option value="original">Original Dark</option><option value="purple">Royal Purple</option><option value="green">Emerald Green</option><option value="light">Premium Light</option><option value="gold">Luxury Gold</option></select><div class="theme-picker" aria-label="Choose app theme"><button type="button" class="theme-choice" data-theme-choice="original" onclick="changeTheme('original')"><span class="theme-dot" style="--dot:#38bdf8"></span>Original Dark</button><button type="button" class="theme-choice" data-theme-choice="purple" onclick="changeTheme('purple')"><span class="theme-dot" style="--dot:#c084fc"></span>Royal Purple</button><button type="button" class="theme-choice" data-theme-choice="green" onclick="changeTheme('green')"><span class="theme-dot" style="--dot:#34d399"></span>Emerald Green</button><button type="button" class="theme-choice" data-theme-choice="light" onclick="changeTheme('light')"><span class="theme-dot" style="--dot:#2878d0"></span>Premium Light</button><button type="button" class="theme-choice" data-theme-choice="gold" onclick="changeTheme('gold')"><span class="theme-dot" style="--dot:#e6bd62"></span>Luxury Gold</button></div><p class="small">Theme is saved only on this device. It does not change other users’ appearance or attendance records.</p></div>
+<div class="field" style="margin-bottom:16px"><label>App Theme</label><div class="theme-picker" aria-label="Choose app theme"><button type="button" class="theme-choice" data-theme-choice="original" onclick="changeTheme('original')"><span class="theme-dot" style="--dot:#38bdf8"></span>Original Dark</button><button type="button" class="theme-choice" data-theme-choice="purple" onclick="changeTheme('purple')"><span class="theme-dot" style="--dot:#c084fc"></span>Royal Purple</button><button type="button" class="theme-choice" data-theme-choice="green" onclick="changeTheme('green')"><span class="theme-dot" style="--dot:#34d399"></span>Emerald Green</button><button type="button" class="theme-choice" data-theme-choice="light" onclick="changeTheme('light')"><span class="theme-dot" style="--dot:#2878d0"></span>Premium Light</button><button type="button" class="theme-choice" data-theme-choice="gold" onclick="changeTheme('gold')"><span class="theme-dot" style="--dot:#e6bd62"></span>Luxury Gold</button></div><div class="brightness-control"><label for="themeBrightness">Theme Brightness</label><div class="brightness-labels"><span>Dark</span><span id="brightnessValue" class="brightness-value">100%</span><span>Bright</span></div><input id="themeBrightness" type="range" min="65" max="135" step="1" value="100" oninput="changeBrightness(this.value)" aria-label="Theme brightness"><p class="small" style="margin:4px 0 0">Adjust the screen brightness for the selected theme. This setting is saved only on this device.</p></div><p class="small">Theme is saved only on this device. It does not change other users’ appearance or attendance records.</p></div>
 <div class="row">
 <div class="field"><label>Employee Name</label><input id="setName"></div>
 <div class="field"><label>Phone</label><input id="setPhone"></div>
@@ -254,8 +259,11 @@ nav button{border-radius:10px;margin:5px 3px;font-weight:800}
 <script>
 const KEY_SETTINGS="winwill_settings_v1";
 const KEY_THEME_TEST="winwill_attendance_test_theme_v1";
-function applyTheme(theme){const allowed=["original","purple","green","light","gold"];const selected=allowed.includes(theme)?theme:"original";document.body.dataset.theme=selected==="original"?"original":selected;const sel=document.getElementById("themeSelect");if(sel)sel.value=selected;document.querySelectorAll("[data-theme-choice]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.themeChoice===selected)));}
+const KEY_THEME_BRIGHTNESS="winwill_theme_brightness_v1";
+function applyTheme(theme){const allowed=["original","purple","green","light","gold"];const selected=allowed.includes(theme)?theme:"original";document.body.dataset.theme=selected;document.querySelectorAll("[data-theme-choice]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.themeChoice===selected)));}
 function changeTheme(theme){const allowed=["original","purple","green","light","gold"];if(!allowed.includes(theme))theme="original";localStorage.setItem(KEY_THEME_TEST,theme);applyTheme(theme);}
+function applyBrightness(value){const level=Math.min(135,Math.max(65,Number(value)||100));document.body.style.setProperty("--app-brightness",String(level/100));const slider=document.getElementById("themeBrightness");const output=document.getElementById("brightnessValue");if(slider)slider.value=String(level);if(output)output.textContent=level+"%";}
+function changeBrightness(value){const level=Math.min(135,Math.max(65,Number(value)||100));localStorage.setItem(KEY_THEME_BRIGHTNESS,String(level));applyBrightness(level);}
 
 const DEFAULT_SETTINGS={name:"Eroshan Ekanayaka",phone:"071 5500451",shiftRate:1800,otRate:337,attendanceAllowance:8000,deductionPercent:8,funeralDeduction:400,advanceDeduction:0};
 const poya={
@@ -409,6 +417,7 @@ year.onchange=render;
 
 settingsToUI();
 applyTheme(localStorage.getItem(KEY_THEME_TEST)||"original");
+applyBrightness(localStorage.getItem(KEY_THEME_BRIGHTNESS)||100);
 render();
 
 if("serviceWorker" in navigator){
