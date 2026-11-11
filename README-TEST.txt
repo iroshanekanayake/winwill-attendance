@@ -1,21 +1,31 @@
-WINWILL ATTENDANCE — THEME TEST BUILD
+WINWILL ATTENDANCE — PERSONALIZED THEME & BACKUP TEST BUILD
 
-This is a separate test build based on the supplied source ZIP. It adds five selectable visual themes and soft 3D-style buttons.
+Included
+- Four themes only: Forest, Ocean, Sunset, Royal (no Night theme).
+- Theme brightness slider (65%–135%).
+- Profile name, photo selection/removal, and profile colour.
+- Save Backup / Restore from Backup for attendance records and app settings.
+- Before a restore, the app downloads a safety backup of the current device data.
 
-IMPORTANT SAFETY NOTES
-- Do not replace the existing production GitHub Pages repository with this test build.
-- Publish this ZIP to a completely separate GitHub account/repository and a separate username.github.io origin. A separate repository under the SAME GitHub username may still share the same origin.
-- Existing attendance/settings storage keys and salary/time calculation code have been retained. The theme preference uses a new key: winwill_attendance_test_theme_v1.
-- The service worker cache name is unique to this test build and only removes older caches with its own test prefix.
-- Test using dummy employee details and dummy attendance first. Do not use real payroll data until verified.
+DATA PRESERVATION
+- Existing attendance localStorage keys (attendance_YEAR_MONTH) are unchanged.
+- Existing employee/payroll settings key (winwill_settings_v1) is unchanged.
+- Theme, brightness, and profile use separate keys:
+  winwill_attendance_test_theme_v1
+  winwill_theme_brightness_v1
+  winwill_profile_v1
+- No existing attendance records are automatically deleted or migrated.
+- Restore replaces only keys included in the selected backup. It first downloads a safety backup.
+- Profile photos are resized/compressed before being stored locally. Browser storage limits still apply; keep regular JSON backups.
 
-PUBLISHING
-1. Create a separate GitHub account (or use a different hosting origin).
-2. Create a new repository for the test.
-3. Upload the CONTENTS of the winwill-attendance-main folder to the repository root (index.html, manifest.json, service-worker.js, icons).
-4. Enable GitHub Pages from the repository settings.
-5. Open the new test URL in a browser. Install it only as a separate test app.
+IMPORTANT
+This is a TEST BUILD. It has not been uploaded to the production GitHub Pages site.
+Do not overwrite the production repository with this ZIP until the test has been checked.
+The included service worker uses a test-only cache name and only clears older caches with the same test prefix.
 
-The test ZIP does not update or modify the currently published app.
-
-Sunday row fix: Sundays now receive the Sunday class before Poya matching, and the red background is applied directly to table cells so alternating-row and hover styling cannot cover it. Attendance storage keys, time inputs, and salary/OT calculation code were not changed.
+TEST CHECKLIST
+1. Use a separate test URL/origin and dummy records first.
+2. Check all four themes and brightness slider.
+3. Save a profile name, photo, and colour; reload and verify persistence.
+4. Save a backup, make a test attendance change, then restore and verify the earlier data returns.
+5. Confirm salary calculation, month navigation, printing, and existing attendance data.
