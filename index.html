@@ -183,11 +183,59 @@ nav button{border-radius:10px;margin:5px 3px;font-weight:800}
 .backup-panel p{margin:0}
 .backup-panel button{width:100%}
 
+
+/* Premium Light contrast refinements */
+body[data-theme="light"]{color:#172b3b;background:#eaf2f8}
+body[data-theme="light"] header{background:#ffffff;color:#172b3b;border-color:#cbd8e3;box-shadow:0 2px 10px rgba(25,55,80,.12)}
+body[data-theme="light"] header h1{color:#075985}
+body[data-theme="light"] header p{color:#475569}
+body[data-theme="light"] nav{background:#ffffff;border-color:#cbd8e3;box-shadow:0 4px 12px rgba(25,55,80,.12)}
+body[data-theme="light"] nav button{color:#475569}
+body[data-theme="light"] nav button.active{color:#075985;background:#dbeafe;border-bottom-color:#075985}
+body[data-theme="light"] .card{background:#ffffff;color:#172b3b;border-color:#cbd8e3;box-shadow:0 6px 18px rgba(25,55,80,.12)}
+body[data-theme="light"] label{color:#92400e}
+body[data-theme="light"] input,body[data-theme="light"] select,body[data-theme="light"] textarea{background:#ffffff;color:#172b3b;border-color:#94a3b8}
+body[data-theme="light"] input[readonly]{background:#eaf2f8;color:#334155;border-color:#cbd5e1}
+body[data-theme="light"] .att{background:#ffffff}
+body[data-theme="light"] .att th,body[data-theme="light"] .att td{color:#172b3b;border-color:#cbd5e1}
+body[data-theme="light"] .att th{background:#dbeafe;color:#1e3a8a}
+body[data-theme="light"] .att tr:nth-child(even){background:#f1f5f9}
+body[data-theme="light"] .att tr:hover{background:#e0f2fe}
+body[data-theme="light"] .att input{background:#ffffff;color:#172b3b;border-color:#94a3b8}
+body[data-theme="light"] .att input:focus{background:#eff6ff}
+body[data-theme="light"] .table-wrap{border-color:#cbd5e1}
+body[data-theme="light"] .table-summary-box{background:#f1f5f9;border-color:#93c5fd}
+body[data-theme="light"] .table-summary-item .label{color:#475569}
+body[data-theme="light"] .table-summary-item .value{color:#075985}
+body[data-theme="light"] .summary .box{background:#f1f5f9;border-color:#cbd5e1}
+body[data-theme="light"] .money{color:#075985}
+body[data-theme="light"] .small{color:#475569}
+body[data-theme="light"] .badge{background:#e2e8f0;color:#1e293b}
+body[data-theme="light"] .calc-item{background:#f1f5f9;color:#172b3b;border-color:#cbd5e1}
+body[data-theme="light"] .calc-item.add{color:#14532d}
+body[data-theme="light"] .calc-item.deduct{color:#991b1b}
+body[data-theme="light"] .calc-item.total{background:#dbeafe;color:#075985;border-color:#93c5fd}
+body[data-theme="light"] .profile-panel,body[data-theme="light"] .backup-panel{background:#f8fafc;border-color:#cbd5e1}
+body[data-theme="light"] button.secondary{background:#475569;color:#ffffff}
+body[data-theme="light"] .theme-choice{background:#ffffff;color:#172b3b;border-color:#cbd5e1}
+body[data-theme="light"] .brightness-control{background:#f1f5f9;border-color:#cbd5e1}
+body[data-theme="light"] .brightness-labels,body[data-theme="light"] .brightness-control p{color:#475569}
+
+
+.brand-heading{display:flex;align-items:center;justify-content:center;gap:10px;max-width:100%;min-height:48px}
+.brand-title{min-width:0;text-align:center}
+.header-profile-photo{width:42px;height:42px;flex:0 0 42px;object-fit:cover;border-radius:50%;border:2px solid var(--accent);box-shadow:0 2px 8px var(--shadow)}
+.header-profile-photo[hidden]{display:none}
+@media(max-width:420px){.brand-heading{gap:7px}.header-profile-photo{width:36px;height:36px;flex-basis:36px}header h1{font-size:18px}header p{font-size:11px}}
+
 </style>
 </head>
 <body>
 <header>
-<h1>Winwill Co. (pvt) Ltd</h1><p>Biyagama — Attendance & Salary Calculator</p>
+<div class="brand-heading">
+<img id="headerProfilePhoto" class="header-profile-photo" alt="Profile photo" hidden>
+<div class="brand-title"><h1>Winwill Co. (pvt) Ltd</h1><p>Biyagama — Attendance & Salary Calculator</p></div>
+</div>
 </header>
 <nav>
 <button id="navAttendance" class="active" onclick="showPage('attendance')">Attendance</button>
@@ -312,7 +360,7 @@ function changeBrightness(value){const level=Math.min(135,Math.max(65,Number(val
 const PROFILE_DEFAULT={name:"",photo:"",color:"#0876b9"};
 let profile=loadProfile();
 function loadProfile(){try{return {...PROFILE_DEFAULT,...JSON.parse(localStorage.getItem(KEY_PROFILE)||"{}")};}catch(e){return {...PROFILE_DEFAULT};}}
-function renderProfile(){const name=document.getElementById("profileName"),img=document.getElementById("profilePreview");if(!name||!img)return;name.value=profile.name||settings.name||"";img.hidden=!profile.photo;img.src=profile.photo||"";document.querySelectorAll(".profile-swatch").forEach(b=>b.setAttribute("aria-pressed",String(b.style.getPropertyValue("--swatch").trim()===profile.color)));}
+function renderProfile(){const name=document.getElementById("profileName"),img=document.getElementById("profilePreview"),headerImg=document.getElementById("headerProfilePhoto");if(name)name.value=profile.name||settings.name||"";if(img){img.hidden=!profile.photo;img.src=profile.photo||"";}if(headerImg){headerImg.hidden=!profile.photo;headerImg.src=profile.photo||"";headerImg.style.borderColor=profile.color||"var(--accent)";}document.querySelectorAll(".profile-swatch").forEach(b=>b.setAttribute("aria-pressed",String(b.style.getPropertyValue("--swatch").trim()===profile.color)));}
 function setProfileColor(color){profile.color=color;renderProfile();}
 function handleProfilePhoto(input){const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith("image/")){alert("Please choose an image file.");input.value="";return;}if(file.size>15*1024*1024){alert("Please choose a photo smaller than 15 MB.");input.value="";return;}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const canvas=document.createElement("canvas"),max=640,scale=Math.min(1,max/Math.max(img.width,img.height));canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);profile.photo=canvas.toDataURL("image/jpeg",.76);renderProfile();};img.src=reader.result;};reader.readAsDataURL(file);}
 function removeProfilePhoto(){profile.photo="";const f=document.getElementById("profilePhotoInput");if(f)f.value="";renderProfile();}
@@ -320,7 +368,7 @@ function saveProfile(){profile.name=document.getElementById("profileName").value
 function collectBackup(){const data={format:"winwill-attendance-backup",version:1,createdAt:new Date().toISOString(),records:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(k.startsWith("attendance_")||k===KEY_SETTINGS||k===KEY_THEME_TEST||k===KEY_THEME_BRIGHTNESS||k===KEY_PROFILE)){data.records[k]=localStorage.getItem(k);}}return data;}
 function downloadBackup(data,suffix=""){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="winwill-attendance-backup"+suffix+"-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
 function saveBackup(){const data=collectBackup();downloadBackup(data);alert("Backup file created. Keep it somewhere safe.");}
-function restoreBackup(input){const file=input.files&&input.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(data.format!=="winwill-attendance-backup"||!data.records||typeof data.records!=="object")throw new Error("Invalid backup file");const allowed=k=>k.startsWith("attendance_")||[KEY_SETTINGS,KEY_THEME_TEST,KEY_THEME_BRIGHTNESS,KEY_PROFILE].includes(k);const entries=Object.entries(data.records).filter(([k,v])=>allowed(k)&&typeof v==="string");if(!entries.length)throw new Error("No supported app data found");if(!confirm("Restore this backup? A safety backup of the current data will be downloaded first. Existing records with matching keys will be replaced."))return;downloadBackup(collectBackup(),"-before-restore");entries.forEach(([k,v])=>localStorage.setItem(k,v));settings=JSON.parse(localStorage.getItem(KEY_SETTINGS)||"null")||DEFAULT_SETTINGS;profile=loadProfile();settingsToUI();applyTheme(localStorage.getItem(KEY_THEME_TEST)||"ocean");applyBrightness(localStorage.getItem(KEY_THEME_BRIGHTNESS)||100);renderProfile();render();alert("Backup restored successfully. Your current data safety backup was downloaded.");}catch(e){alert("Could not restore backup: "+e.message);}finally{input.value="";}};reader.readAsText(file);}
+function restoreBackup(input){const file=input.files&&input.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(data.format!=="winwill-attendance-backup"||!data.records||typeof data.records!=="object")throw new Error("Invalid backup file");const allowed=k=>k.startsWith("attendance_")||[KEY_SETTINGS,KEY_THEME_TEST,KEY_THEME_BRIGHTNESS,KEY_PROFILE].includes(k);const entries=Object.entries(data.records).filter(([k,v])=>allowed(k)&&typeof v==="string");if(!entries.length)throw new Error("No supported app data found");if(!confirm("Restore this backup? A safety backup of the current data will be downloaded first. Existing records with matching keys will be replaced."))return;downloadBackup(collectBackup(),"-before-restore");entries.forEach(([k,v])=>localStorage.setItem(k,v));settings=JSON.parse(localStorage.getItem(KEY_SETTINGS)||"null")||DEFAULT_SETTINGS;profile=loadProfile();settingsToUI();applyTheme(localStorage.getItem(KEY_THEME_TEST)||"original");applyBrightness(localStorage.getItem(KEY_THEME_BRIGHTNESS)||100);renderProfile();render();alert("Backup restored successfully. Your current data safety backup was downloaded.");}catch(e){alert("Could not restore backup: "+e.message);}finally{input.value="";}};reader.readAsText(file);}
 const DEFAULT_SETTINGS={name:"Eroshan Ekanayaka",phone:"071 5500451",shiftRate:1800,otRate:337,attendanceAllowance:8000,deductionPercent:8,funeralDeduction:400,advanceDeduction:0};
 const poya={
 2026:["2026-01-03","2026-02-01","2026-03-02","2026-04-01","2026-05-01","2026-05-30","2026-06-29","2026-07-29","2026-08-27","2026-09-26","2026-10-25","2026-11-24","2026-12-23"],
@@ -472,7 +520,7 @@ month.onchange=render;
 year.onchange=render;
 
 settingsToUI();
-applyTheme(localStorage.getItem(KEY_THEME_TEST)||"ocean");
+applyTheme(localStorage.getItem(KEY_THEME_TEST)||"original");
 applyBrightness(localStorage.getItem(KEY_THEME_BRIGHTNESS)||100);
 renderProfile();
 render();

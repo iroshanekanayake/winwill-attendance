@@ -1,6 +1,5 @@
-
 {
-  "name": "Winwill",
+  "name": "Winwill Attendance",
   "short_name": "Winwill",
   "start_url": "./index.html",
   "display": "standalone",
@@ -19,6 +18,5 @@
       "type": "image/png",
       "purpose": "any"
     }
-  ],
-  "id": "./winwill-theme-test"
+  ]
 }
