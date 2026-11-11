@@ -1,5 +1,6 @@
+
 {
-  "name": "Winwill Attendance \u2014 Theme Test",
+  "name": "Winwill",
   "short_name": "Winwill",
   "start_url": "./index.html",
   "display": "standalone",
