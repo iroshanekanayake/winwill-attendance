@@ -1,9 +1,9 @@
-const CACHE = "winwill-attendance-v8";
+const CACHE = "winwill-attendance-v9";
 const APP_CACHE_PREFIXES = ["winwill-attendance-", "winwill-theme-", "winwill-attendance-theme-"];
 const FILES = ["./", "./index.html", "./manifest.json", "./service-worker.js", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)));
 });
 
 self.addEventListener("activate", event => {
@@ -40,4 +40,9 @@ self.addEventListener("fetch", event => {
     if (response && response.ok) (await caches.open(CACHE)).put(request, response.clone());
     return response;
   })());
+});
+
+\n// Activate a waiting update only after the user taps the in-app Update button.
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
 });

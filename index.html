@@ -228,6 +228,82 @@ body[data-theme="light"] .brightness-labels,body[data-theme="light"] .brightness
 .header-profile-photo[hidden]{display:none}
 @media(max-width:420px){.brand-heading{gap:7px}.header-profile-photo{width:36px;height:36px;flex-basis:36px}header h1{font-size:18px}header p{font-size:11px}}
 
+
+
+/* Optional screenshot-inspired Sky Neumorphism theme */
+body[data-theme="sky"]{
+  color:#17283b;
+  background:linear-gradient(145deg,#e9f4fb 0%,#dcebf7 52%,#eaf3fa 100%)!important;
+}
+body[data-theme="sky"] header{
+  background:rgba(255,255,255,.82);color:#17283b;border-bottom:1px solid #d3e2ee;
+  box-shadow:0 4px 16px rgba(57,86,112,.10)
+}
+body[data-theme="sky"] header h1{color:#17283b}
+body[data-theme="sky"] header p{color:#ea580c}
+body[data-theme="sky"] nav{
+  background:rgba(248,252,255,.94);border-color:#d5e3ef;
+  box-shadow:0 5px 16px rgba(57,86,112,.12)
+}
+body[data-theme="sky"] nav button{color:#5c6b7b}
+body[data-theme="sky"] nav button.active{
+  color:#fff;background:linear-gradient(145deg,#159fe5,#006eae);
+  border:1px solid #75d4f4;border-bottom:4px solid #07517f;
+  border-radius:18px 18px 14px 14px;
+  box-shadow:0 6px 0 rgba(5,81,127,.22),0 8px 18px rgba(0,111,174,.22),inset 0 2px 3px rgba(255,255,255,.35)
+}
+body[data-theme="sky"] .card{
+  background:linear-gradient(145deg,#fff,#f7fbff);color:#17283b;
+  border:1px solid #d4e1ec;border-radius:24px;
+  box-shadow:8px 9px 20px rgba(57,86,112,.15),-5px -5px 14px rgba(255,255,255,.88)
+}
+body[data-theme="sky"] label,
+body[data-theme="sky"] .att th{color:#ea580c}
+body[data-theme="sky"] input,
+body[data-theme="sky"] select{
+  background:#e7eef6;color:#17283b;border:1px solid #cbd8e4;border-radius:14px;
+  box-shadow:inset 3px 3px 7px rgba(67,91,115,.15),inset -3px -3px 7px rgba(255,255,255,.9)
+}
+body[data-theme="sky"] input:focus,
+body[data-theme="sky"] select:focus{
+  border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.18),inset 2px 2px 5px rgba(67,91,115,.08)
+}
+body[data-theme="sky"] input[readonly]{background:#edf3f8;color:#64748b}
+body[data-theme="sky"] button.action{
+  color:#fff;background:linear-gradient(145deg,#159fe5,#006eae);
+  border:1px solid #75d4f4;border-radius:20px;
+  box-shadow:0 6px 0 #07517f,0 10px 18px rgba(0,105,170,.20),inset 0 2px 3px rgba(255,255,255,.35)
+}
+body[data-theme="sky"] button.action:active{transform:translateY(3px);box-shadow:0 3px 0 #07517f,inset 0 2px 5px rgba(0,0,0,.12)}
+body[data-theme="sky"] button.secondary{
+  color:#17283b;background:linear-gradient(145deg,#fff,#e8eff7);border:1px solid #d2dfeb;
+  box-shadow:0 5px 0 #c2cfdb,0 9px 16px rgba(57,86,112,.11)
+}
+body[data-theme="sky"] .danger{
+  background:linear-gradient(145deg,#ff6874,#e72f43)!important;color:#fff!important;
+  box-shadow:0 5px 0 #a91d2d,0 9px 16px rgba(210,40,60,.18)!important
+}
+body[data-theme="sky"] .table-wrap{border-color:#d2dfeb;border-radius:20px;box-shadow:0 7px 18px rgba(57,86,112,.10)}
+body[data-theme="sky"] .att{background:#f8fbff}
+body[data-theme="sky"] .att th{background:#f7fbff;color:#ea580c}
+body[data-theme="sky"] .att th,body[data-theme="sky"] .att td{color:#17283b;border-color:#d8e2ec}
+body[data-theme="sky"] .att tr:nth-child(even){background:#f0f5fa}
+body[data-theme="sky"] .att tr.sunday > td{background:#f7dfe7!important;color:#c92855!important}
+body[data-theme="sky"] .att tr.saturday > td{background:#e0f0ff!important;color:#2563a6!important}
+body[data-theme="sky"] .att tr.poya > td{background:#fff1ce!important;color:#9a6700!important}
+body[data-theme="sky"] .table-summary-box{
+  background:rgba(255,255,255,.96);border:1px solid #d4e0eb;border-radius:22px;
+  box-shadow:0 7px 18px rgba(57,86,112,.14)
+}
+body[data-theme="sky"] .table-summary-item .value{color:#0284c7}
+body[data-theme="sky"] .calc-item{background:#f7fbff;color:#17283b;border:1px solid #d5e1ec;border-radius:16px}
+body[data-theme="sky"] .calc-item.add{color:#176b4a}
+body[data-theme="sky"] .calc-item.deduct{color:#c83245}
+body[data-theme="sky"] .calc-item.total{background:#e2f1fc;color:#0275b7;border-color:#9ccfea}
+body[data-theme="sky"] .small{color:#64748b}
+body[data-theme="sky"] .theme-choice{background:#f7fbff;color:#17283b;border-color:#d4e0eb}
+body[data-theme="sky"] .theme-choice[aria-pressed="true"]{outline:3px solid #38bdf8}
+
 </style>
 </head>
 <body>
@@ -299,7 +375,7 @@ body[data-theme="light"] .brightness-labels,body[data-theme="light"] .brightness
 <section id="settings" class="page">
 <div class="card">
 <h2 style="color:#38bdf8;margin-top:0;">Settings</h2>
-<div class="field" style="margin-bottom:16px"><label>App Theme</label><div class="theme-picker" aria-label="Choose app theme"><button type="button" class="theme-choice" data-theme-choice="original" onclick="changeTheme('original')"><span class="theme-dot" style="--dot:#38bdf8"></span>Original Dark</button><button type="button" class="theme-choice" data-theme-choice="royal" onclick="changeTheme('royal')"><span class="theme-dot" style="--dot:#d946ef"></span>Royal Purple</button><button type="button" class="theme-choice" data-theme-choice="emerald" onclick="changeTheme('emerald')"><span class="theme-dot" style="--dot:#10b981"></span>Emerald Green</button><button type="button" class="theme-choice" data-theme-choice="light" onclick="changeTheme('light')"><span class="theme-dot" style="--dot:#3b82f6"></span>Premium Light</button><button type="button" class="theme-choice" data-theme-choice="gold" onclick="changeTheme('gold')"><span class="theme-dot" style="--dot:#facc15"></span>Luxury Gold</button></div><div class="brightness-control"><label for="themeBrightness">Theme Brightness</label><div class="brightness-labels"><span>Dark</span><span id="brightnessValue" class="brightness-value">100%</span><span>Bright</span></div><input id="themeBrightness" type="range" min="65" max="135" step="1" value="100" oninput="changeBrightness(this.value)" aria-label="Theme brightness"><p class="small" style="margin:4px 0 0">Adjust the screen brightness for the selected theme. This setting is saved only on this device.</p></div><p class="small">Theme is saved only on this device. It does not change other users’ appearance or attendance records.</p></div>
+<div class="field" style="margin-bottom:16px"><label>App Theme</label><div class="theme-picker" aria-label="Choose app theme"><button type="button" class="theme-choice" data-theme-choice="original" onclick="changeTheme('original')"><span class="theme-dot" style="--dot:#38bdf8"></span>Original Dark</button><button type="button" class="theme-choice" data-theme-choice="royal" onclick="changeTheme('royal')"><span class="theme-dot" style="--dot:#d946ef"></span>Royal Purple</button><button type="button" class="theme-choice" data-theme-choice="emerald" onclick="changeTheme('emerald')"><span class="theme-dot" style="--dot:#10b981"></span>Emerald Green</button><button type="button" class="theme-choice" data-theme-choice="light" onclick="changeTheme('light')"><span class="theme-dot" style="--dot:#3b82f6"></span>Premium Light</button><button type="button" class="theme-choice" data-theme-choice="gold" onclick="changeTheme('gold')"><span class="theme-dot" style="--dot:#facc15"></span>Luxury Gold</button><button type="button" class="theme-choice" data-theme-choice="sky" onclick="changeTheme('sky')"><span class="theme-dot" style="--dot:#38bdf8"></span>Sky Neumorphism</button></div><div class="brightness-control"><label for="themeBrightness">Theme Brightness</label><div class="brightness-labels"><span>Dark</span><span id="brightnessValue" class="brightness-value">100%</span><span>Bright</span></div><input id="themeBrightness" type="range" min="65" max="135" step="1" value="100" oninput="changeBrightness(this.value)" aria-label="Theme brightness"><p class="small" style="margin:4px 0 0">Adjust the screen brightness for the selected theme. This setting is saved only on this device.</p></div><p class="small">Theme is saved only on this device. It does not change other users’ appearance or attendance records.</p></div>
 <div class="profile-panel">
   <div class="profile-heading">
     <img id="profilePreview" class="profile-photo" alt="Profile photo" src="" hidden>
@@ -352,8 +428,8 @@ const KEY_SETTINGS="winwill_settings_v1";
 const KEY_THEME_TEST="winwill_attendance_test_theme_v1";
 const KEY_PROFILE="winwill_profile_v1";
 const KEY_THEME_BRIGHTNESS="winwill_theme_brightness_v1";
-function applyTheme(theme){const allowed=["original","royal","emerald","light","gold"];const selected=allowed.includes(theme)?theme:"original";document.body.dataset.theme=selected;document.querySelectorAll("[data-theme-choice]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.themeChoice===selected)));}
-function changeTheme(theme){const allowed=["original","royal","emerald","light","gold"];if(!allowed.includes(theme))theme="original";localStorage.setItem(KEY_THEME_TEST,theme);applyTheme(theme);}
+function applyTheme(theme){const allowed=["original","royal","emerald","light","gold","sky"];const selected=allowed.includes(theme)?theme:"original";document.body.dataset.theme=selected;document.querySelectorAll("[data-theme-choice]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.themeChoice===selected)));}
+function changeTheme(theme){const allowed=["original","royal","emerald","light","gold","sky"];if(!allowed.includes(theme))theme="original";localStorage.setItem(KEY_THEME_TEST,theme);applyTheme(theme);}
 function applyBrightness(value){const level=Math.min(135,Math.max(65,Number(value)||100));document.body.style.setProperty("--app-brightness",String(level/100));const slider=document.getElementById("themeBrightness");const output=document.getElementById("brightnessValue");if(slider)slider.value=String(level);if(output)output.textContent=level+"%";}
 function changeBrightness(value){const level=Math.min(135,Math.max(65,Number(value)||100));localStorage.setItem(KEY_THEME_BRIGHTNESS,String(level));applyBrightness(level);}
 
@@ -529,12 +605,73 @@ if("serviceWorker" in navigator){
   window.addEventListener("load", async () => {
     try {
       const registration = await navigator.serviceWorker.register("./service-worker.js", { updateViaCache: "none" });
+      const notice = document.getElementById("appUpdateNotice");
+      const applyButton = document.getElementById("applyAppUpdate");
+      const dismissButton = document.getElementById("dismissAppUpdate");
+      const showNotice = () => { if (notice) notice.hidden = false; };
+
+      // If a previous check already downloaded an update, show the in-app notice.
+      if (registration.waiting && navigator.serviceWorker.controller) showNotice();
+
+      registration.addEventListener("updatefound", () => {
+        const installing = registration.installing;
+        if (!installing) return;
+        installing.addEventListener("statechange", () => {
+          if (installing.state === "installed" && navigator.serviceWorker.controller) showNotice();
+        });
+      });
+
+      // Check once at launch, on foreground return, and periodically while open.
       await registration.update();
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible" && navigator.onLine) registration.update().catch(() => {});
+      });
+      window.setInterval(() => {
+        if (navigator.onLine) registration.update().catch(() => {});
+      }, 4 * 60 * 60 * 1000);
+
+      if (applyButton) applyButton.addEventListener("click", () => {
+        if (!registration.waiting) {
+          registration.update().catch(() => {});
+          return;
+        }
+        applyButton.disabled = true;
+        applyButton.textContent = "Updating…";
+        registration.waiting.postMessage({ type: "SKIP_WAITING" });
+      });
+      if (dismissButton) dismissButton.addEventListener("click", () => { if (notice) notice.hidden = true; });
+
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
     } catch (error) {
-      console.error("Service worker update failed:", error);
+      console.error("Service worker update check failed:", error);
     }
-  });
+  }, { once: true });
 }
 </script>
+
+<div id="appUpdateNotice" class="app-update-notice" role="status" aria-live="polite" hidden>
+  <div class="app-update-copy">
+    <strong>Update available</strong>
+    <span>A new version is ready. Save your attendance changes before updating.</span>
+  </div>
+  <button type="button" id="applyAppUpdate" class="app-update-button">Update</button>
+  <button type="button" id="dismissAppUpdate" class="app-update-dismiss" aria-label="Dismiss update notice">×</button>
+</div>
+<style>
+.app-update-notice{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:99999;display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid #38bdf8;border-radius:16px;background:#102235;color:#f8fafc;box-shadow:0 10px 30px rgba(0,0,0,.30)}
+.app-update-notice[hidden]{display:none}
+.app-update-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.app-update-copy strong{font-size:14px}.app-update-copy span{font-size:12px;color:#cbd5e1;line-height:1.35}
+.app-update-button{border:0;border-radius:12px;padding:10px 14px;background:#0284c7;color:#fff;font-weight:700;white-space:nowrap}
+.app-update-dismiss{border:0;background:transparent;color:#cbd5e1;font-size:22px;padding:2px 5px}
+body[data-theme="sky"] .app-update-notice{background:#fff;color:#17283b;border-color:#38bdf8}
+body[data-theme="sky"] .app-update-copy span,body[data-theme="sky"] .app-update-dismiss{color:#64748b}
+</style>
+
 </body>
 </html>
