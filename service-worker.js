@@ -1,4 +1,4 @@
-const CACHE = "winwill-attendance-v9";
+const CACHE = "winwill-attendance-v10";
 const APP_CACHE_PREFIXES = ["winwill-attendance-", "winwill-theme-", "winwill-attendance-theme-"];
 const FILES = ["./", "./index.html", "./manifest.json", "./service-worker.js", "./icon-192.png", "./icon-512.png"];
 

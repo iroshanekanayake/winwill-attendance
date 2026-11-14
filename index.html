@@ -569,6 +569,10 @@ function updatePay(){
     <div class="calc-item deduct"><span>Advance / අත්තිකාරම්</span> <b>- ${money(adv)}</b></div>
     <div class="calc-item deduct" style="font-weight:bold; background:#3b1219; border-left-color:#ef4444;"><span>Total Deductions</span> <b>- ${money(totalDeductions)}</b></div>
     <div class="calc-item total"><span>Estimated Take Home (${months[month.value]} ${year.value})</span> <b>${money(take)}</b></div>
+    <div class="calc-item add" style="margin-top:14px;border-top:2px solid var(--border);padding-top:14px;"><span><b>Company Contributions (not deducted from employee)</b></span></div>
+    <div class="calc-item add"><span>E.P.F. 12% of Basic Salary</span> <b>${money(basic*0.12)}</b></div>
+    <div class="calc-item add"><span>E.T.F. 3% of Basic Salary</span> <b>${money(basic*0.03)}</b></div>
+    <div class="calc-item" style="font-weight:bold;background:#e0f2fe;color:#075985;border-left-color:#0284c7;"><span>Total Company Contributions (15%)</span> <b>${money(basic*0.15)}</b></div>
   </div>`;
 }
 
